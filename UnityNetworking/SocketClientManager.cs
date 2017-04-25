@@ -80,7 +80,7 @@ namespace MixedRealityNetworking
         #region Methods
 
         /// <summary>
-        /// Connects to the socket and starts listening
+        /// Connects to the <c cref="udpClient">socket</c> and starts listening
         /// </summary>
         public static void Connect()
         {
@@ -91,9 +91,24 @@ namespace MixedRealityNetworking
         }
 
         /// <summary>
+        /// Method to subscribe to a message
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Gets thrown when there is already a subscription for the message ID</exception>
+        /// <param name="messageId">The id of the message you want to subscribe to</param>
+        /// <param name="callbackMethod">The method that should be called</param>
+        public static void Subscribe(byte messageId, Action<NetworkMessage> callbackMethod)
+        {
+            // Check if not already subscribed
+            if (SocketClientManager.callbackMethods.ContainsKey(messageId))
+                throw new InvalidOperationException("There is already a subscription to this message ID");
+
+            SocketClientManager.callbackMethods.Add(messageId, callbackMethod);
+        }
+
+        /// <summary>
         /// Sends a message
         /// </summary>
-        /// <param name="nm">The network message that needs to be send</param>
+        /// <param name="nm">The <c cref="NetworkMessage">network message</c> that needs to be send</param>
         public static void SendMessage(NetworkMessage nm)
         {
             // Write the data into a byte array
@@ -103,7 +118,7 @@ namespace MixedRealityNetworking
 
             // Write the content into the array
             var i = 1;
-            
+
             foreach (byte messageData in nm.Content)
             {
                 byteArray[i] = messageData;
@@ -117,21 +132,7 @@ namespace MixedRealityNetworking
         }
 
         /// <summary>
-        /// Method to subscribe to a message
-        /// </summary>
-        /// <param name="messageId">The id of the message you want to subscribe to</param>
-        /// <param name="callbackMethod">The method that should be called</param>
-        public static void Subscribe(byte messageId, Action<NetworkMessage> callbackMethod)
-        {
-            // Check if not already subscribed
-            if (SocketClientManager.callbackMethods.ContainsKey(messageId))
-                throw new System.Exception("There is already a subscription to this message ID");
-
-            SocketClientManager.callbackMethods.Add(messageId, callbackMethod);
-        }
-
-        /// <summary>
-        /// Method that listens for incoming messages on a UdpListener
+        /// Method that listens for incoming messages on the <c cref="udpClient">socket</c>
         /// </summary>
         private static void Listen()
         {
@@ -182,7 +183,7 @@ namespace MixedRealityNetworking
         }
 
         /// <summary>
-        /// Stops listening to the socket and closes the thread
+        /// Stops listening to the <c cref="udpClient">socket</c> and closes the <c cref="socketThread">thread</c>
         /// </summary>
         public static void StopListening()
         {

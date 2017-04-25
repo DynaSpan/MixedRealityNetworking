@@ -94,13 +94,14 @@ namespace MixedRealityNetworking
         /// <summary>
         /// Method to subscribe to a message
         /// </summary>
+        /// <exception cref="InvalidOperationException">Gets thrown when there is already a subscription for the message ID</exception>
         /// <param name="messageId">The id of the message you want to subscribe to</param>
         /// <param name="callbackMethod">The method that should be called</param>
         public static void Subscribe(byte messageId, Action<NetworkMessage> callbackMethod)
         {
             // Check if not already subscribed
             if (SocketClientManager.callbackMethods.ContainsKey(messageId))
-                throw new System.Exception("There is already a subscription to this message ID");
+                throw new InvalidOperationException("There is already a subscription to this message ID");
 
             SocketClientManager.callbackMethods.Add(messageId, callbackMethod);
         }
@@ -108,7 +109,7 @@ namespace MixedRealityNetworking
         /// <summary>
         /// Sends a message
         /// </summary>
-        /// <param name="nm">The network message that needs to be send</param>
+        /// <param name="nm">The <c cref="NetworkMessage">network message</c> that needs to be send</param>
         public static void SendMessage(NetworkMessage nm)
         {
             // Write the data into a byte array
