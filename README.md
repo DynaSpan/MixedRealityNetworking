@@ -18,3 +18,7 @@ When you've done this, you can start using the MixedRealityNetworking namespace 
 We've tried using all kinds of networking solutions for our project with Unity and a Hololens. Unity's standard networkinglibrary "UNet" had a lot of overhead, and was not easy to integrate into our project. Microsoft released a Holotoolkit for the Hololens in combination with Unity. However, this library is not fully opensource and only runs on Windows. Because the protocol is not opensource, you can't implement it into a dedicated Linux server.
 
 This library gives you just a small layer on top of the UDP protocol, meaning you can send every data you want. It's very easy in use and easily expendable for use in your own project. You can use it peer2peer, but you can also implement a dedicated server for example.
+
+## Extra information
+
+UDP does not automatically know clients, like a TCP socket. Before a client is known, it should send a message first. If you are having problems with connecting 2 clients, please make sure your firewall allows the UDP traffic and the IP addresses and ports are correct. You could work around p2p issues by using a dedicated server which routes the UDP traffic to the right client. But even then; all clients should send a message first to the server before the client is known. The server should store the IP address and the port.
