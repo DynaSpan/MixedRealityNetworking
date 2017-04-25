@@ -129,13 +129,13 @@
         /// <summary>
         /// Reads a byte from the buffer
         /// </summary>
-        /// <exception cref="System.Exception">Thrown when the index is outside of the Content bounds</exception>
+        /// <exception cref="System.IndexOutOfRangeException">Thrown when the index is outside of the Content bounds</exception>
         /// <returns>The byte</returns>
         public byte ReadByte()
         {
             // Check if index is not out of bounds
             if (this.readIndex >= this.Content.Length - 1)
-                throw new System.Exception("Trying to read outside content bounds");
+                throw new System.IndexOutOfRangeException("Trying to read outside content bounds");
 
             byte b = this.Content[this.readIndex];
             ++this.readIndex;
@@ -146,13 +146,13 @@
         /// <summary>
         /// Reads a float from the buffer
         /// </summary>
-        /// <exception cref="System.Exception">Thrown when the index is outside of the Content bounds</exception>
+        /// <exception cref="System.IndexOutOfRangeException">Thrown when the index is outside of the Content bounds</exception>
         /// <returns>The float</returns>
         public float ReadFloat()
         {
             // Check if index is not out of bounds
             if ((this.readIndex + 3) >= this.Content.Length - 1)
-                throw new System.Exception("Trying to read outside content bounds");
+                throw new System.IndexOutOfRangeException("Trying to read outside content bounds");
 
             byte[] floatArr = new byte[4];
 
