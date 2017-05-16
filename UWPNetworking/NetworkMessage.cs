@@ -127,6 +127,28 @@
         }
 
         /// <summary>
+        /// Writes an integer to the buffer
+        /// </summary>
+        /// <param name="i">The integer that needs to be writed</param>
+        public void Write(int i)
+        {
+            byte[] byteArr = System.BitConverter.GetBytes(i);
+
+            this.Write(byteArr);
+        }
+
+        /// <summary>
+        /// Writes a long to the buffer
+        /// </summary>
+        /// <param name="i">The long that needs to be writed</param>
+        public void Write(long l)
+        {
+            byte[] byteArr = System.BitConverter.GetBytes(l);
+
+            this.Write(byteArr);
+        }
+
+        /// <summary>
         /// Reads a byte from the buffer
         /// </summary>
         /// <exception cref="System.IndexOutOfRangeException">Thrown when the index is outside of the Content bounds</exception>
@@ -162,6 +184,48 @@
             }
 
             return System.BitConverter.ToSingle(floatArr, 0);
+        }
+
+        /// <summary>
+        /// Reads an integer from the buffer
+        /// </summary>
+        /// <exception cref="System.IndexOutOfRangeException">Thrown when the index is outside of the Content bounds</exception>
+        /// <returns>The integer</returns>
+        public int ReadInt()
+        {
+            // Check if index is not out of bounds
+            if ((this.readIndex + 3) >= this.Content.Length - 1)
+                throw new System.IndexOutOfRangeException("Trying to read outside content bounds");
+
+            byte[] floatArr = new byte[4];
+
+            for (int i = 0; i < 4; i++)
+            {
+                floatArr[i] = this.ReadByte();
+            }
+
+            return System.BitConverter.ToInt32(floatArr, 0);
+        }
+
+        /// <summary>
+        /// Reads a long from the buffer
+        /// </summary>
+        /// <exception cref="System.IndexOutOfRangeException">Thrown when the index is outside of the Content bounds</exception>
+        /// <returns>The long</returns>
+        public long ReadLong()
+        {
+            // Check if index is not out of bounds
+            if ((this.readIndex + 7) >= this.Content.Length - 1)
+                throw new System.IndexOutOfRangeException("Trying to read outside content bounds");
+
+            byte[] floatArr = new byte[4];
+
+            for (int i = 0; i < 8; i++)
+            {
+                floatArr[i] = this.ReadByte();
+            }
+
+            return System.BitConverter.ToInt64(floatArr, 0);
         }
 
         /// <summary>

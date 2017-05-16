@@ -171,8 +171,17 @@ namespace MixedRealityNetworking
             {
                 // Thread aborted, do nothing
             }
+            catch (SocketException e)
+            {
+                // Socket aborted, probably because we want to close it
+                if (e.ErrorCode != 10004)
+                    throw e;
+            }
             catch (Exception e)
             {
+                // Rethrow exception
+                throw e;
+
                 PrintDebug(e.Message);
             }
             finally
@@ -197,7 +206,7 @@ namespace MixedRealityNetworking
             {
                 SocketClientManager.abortThread = true;
 
-                SocketClientManager.socketThread.Abort();
+                //SocketClientManager.socketThread.Abort();
             }
         }
 
