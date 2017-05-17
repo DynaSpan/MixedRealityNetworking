@@ -218,7 +218,7 @@
             if ((this.readIndex + 7) >= this.Content.Length - 1)
                 throw new System.IndexOutOfRangeException("Trying to read outside content bounds");
 
-            byte[] floatArr = new byte[4];
+            byte[] floatArr = new byte[8];
 
             for (int i = 0; i < 8; i++)
             {
