@@ -159,7 +159,17 @@ namespace MixedRealityNetworking
                     // Call the correct callback method
                     if (SocketClientManager.callbackMethods.ContainsKey(messageId))
                     {
-                        SocketClientManager.callbackMethods[messageId](new NetworkMessage(messageId, message));
+                        // Catch any exceptions and rethrow them,
+                        // so a user gets a good exception instead of a 
+                        // object disposed exception
+                        try
+                        {
+                            SocketClientManager.callbackMethods[messageId](new NetworkMessage(messageId, message));
+                        }
+                        catch (Exception e)
+                        {
+                            throw e;
+                        }
                     }
                     else
                     {
